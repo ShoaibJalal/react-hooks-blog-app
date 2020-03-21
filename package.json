@@ -6,13 +6,18 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "concurrently": "^5.1.0",
+    "http-proxy-middleware": "^1.0.3",
+    "json-server": "^0.16.1",
     "mdbreact": "^4.25.3",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-scripts": "3.2.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npx concurrently \"npm run start:server\" \"npm run start:client\"",
+    "start:server": "npx json-server --watch server/db.json --port 4000 --routes server/routes.json",
+    "start:client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

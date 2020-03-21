@@ -1,0 +1,22 @@
+{
+  "posts": [
+    {
+      "id": "react-hooks",
+      "title": "React Hooks",
+      "content": "The greatest thing since sliced bread!",
+      "author": "Shoaib Jalal"
+    },
+    {
+      "id": "react-fragments",
+      "title": "Using React Fragments",
+      "content": "Keeping the DOM tree clean!",
+      "author": "Jason Stat"
+    }
+  ],
+  "users": [{ "id": 1, "username": "Shoaib Jalal", "password": "secure123" }],
+  "themes": [
+    { "id": 1, "primaryColor": "#33b5e5", "secondaryColor": "#00C851" },
+    { "id": 2, "primaryColor": "#ff4444", "secondaryColor": "#FF8800" },
+    { "id": 3, "primaryColor": "#4285F4", "secondaryColor": "#0d47a1" }
+  ]
+}
