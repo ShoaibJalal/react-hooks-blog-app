@@ -1,4 +1,5 @@
 import React, { useReducer, useEffect, useState } from "react";
+import { useResource } from "react-request-hook";
 import appReducer from "./reducers";
 import { MDBContainer, MDBRow } from "mdbreact";
 import { ThemeContext, StateContext } from "./contexts";
@@ -9,19 +10,6 @@ import CreatePost from "./post/CreatePost";
 import UserBar from "./user/UserBar";
 import Header from "./Header";
 
-const defaultPosts = [
-  {
-    title: "React Hooks",
-    content: "The greatest thing since sliced bread!",
-    author: "Shoaib Jalal"
-  },
-  {
-    title: "Using React Fragments",
-    content: "Keeping the DOM tree clean!",
-    author: "Shoaib Jalal"
-  }
-];
-
 function App() {
   const [theme, setTheme] = useState({
     primaryColor: "#33b5e5",
@@ -29,9 +17,11 @@ function App() {
   });
   const [state, dispatch] = useReducer(appReducer, {
     user: "",
-    posts: defaultPosts
+    posts: [],
+    error: ""
   });
-  const { user, posts } = state;
+  const { user, error } = state;
+
   useEffect(() => {
     if (user) {
       document.title = `${user} - Your Blog`;
@@ -40,6 +30,20 @@ function App() {
     }
   }, [user]);
 
+  const [posts, getPosts] = useResource(() => ({
+    url: "/posts",
+    method: "get"
+  }));
+  useEffect(getPosts, []);
+
+  useEffect(() => {
+    if (posts && posts.error) {
+      dispatch({ type: "POSTS_ERROR" });
+    }
+    if (posts && posts.data) {
+      dispatch({ type: "FETCH_POSTS", posts: posts.data });
+    }
+  }, [posts]);
   return (
     <StateContext.Provider value={{ state, dispatch }}>
       <ThemeContext.Provider value={theme}>
@@ -53,6 +57,7 @@ function App() {
             {user && <CreatePost />}
             <br />
             <hr />
+            {error && <b>{error}</b>}
             <PostList />
           </MDBRow>
         </MDBContainer>
