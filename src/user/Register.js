@@ -1,4 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { useResource } from "react-request-hook";
 import { StateContext } from "../contexts";
 import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from "mdbreact";
 
@@ -9,6 +10,18 @@ const Register = () => {
 
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
+
+  const [user, register] = useResource((username, password) => ({
+    url: "/users",
+    method: "post",
+    data: { username, password }
+  }));
+
+  useEffect(() => {
+    if (user && user.data) {
+      dispatch({ type: "REGISTER", username: user.data.username });
+    }
+  }, [dispatch, user]);
 
   function handleUsername(evt) {
     setUsername(evt.target.value);
@@ -28,7 +41,7 @@ const Register = () => {
           <form
             onSubmit={e => {
               e.preventDefault();
-              dispatch({ type: "LOGOUT" });
+              register(username, password);
             }}
           >
             <p className="h5 text-center mb-4">Sign up</p>

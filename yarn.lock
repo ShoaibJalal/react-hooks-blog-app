@@ -1497,6 +1497,11 @@
   resolved "https://registry.yarnpkg.com/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
   integrity sha512-OCutwjDZ4aFS6PB1UZ988C4YgwlBHJd6wCeQqaLdmadZ/7e+w79+hbMUFC1QXDNCmdyoRfAFdm0RypzwR+Qpag==
 
+"@types/history@^4.6.2":
+  version "4.7.5"
+  resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.5.tgz#527d20ef68571a4af02ed74350164e7a67544860"
+  integrity sha512-wLD/Aq2VggCJXSjxEwrMafIP51Z+13H78nXIX0ABEuIGhmB5sNGbR113MOKo+yfw+RDo1ZU3DM6yfnnRF/+ouw==
+
 "@types/http-proxy@^1.17.3":
   version "1.17.4"
   resolved "https://registry.yarnpkg.com/@types/http-proxy/-/http-proxy-1.17.4.tgz#e7c92e3dbe3e13aa799440ff42e6d3a17a9d045b"
@@ -7443,6 +7448,13 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
+navi@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/navi/-/navi-0.14.0.tgz#5b96e7916cfc20f9244c9c56a74ecd32d45e4f8c"
+  integrity sha512-lp0nAhU/0HLRcrASlxTpjNFmfr0AHYbCi9IZtQqhRbYaXdOpROoE4wjAlQJHf/qQ4KttAT6JRZCMNQXk0FzsVw==
+  dependencies:
+    history "^4.9.0"
+
 negotiator@0.6.2:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.2.tgz#feacf7ccf525a77ae9634436a64883ffeca346fb"
@@ -9238,6 +9250,13 @@ react-modal@^3.8.1:
     prop-types "^15.5.10"
     react-lifecycles-compat "^3.0.0"
     warning "^4.0.3"
+
+react-navi@^0.14.3:
+  version "0.14.3"
+  resolved "https://registry.yarnpkg.com/react-navi/-/react-navi-0.14.3.tgz#60964017521e41c1c5e48782bb8cbab766ef8aa7"
+  integrity sha512-fht9sVtJKpiD6pk08+YNcGNLMlolm13pVWqwbQVgOqWZW/1OulhSn3pY0dyJ6PLUO56ieYk+kjou12yWSiDQEw==
+  dependencies:
+    "@types/history" "^4.6.2"
 
 react-numeric-input@2.2.3:
   version "2.2.3"

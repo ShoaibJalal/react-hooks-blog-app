@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { ThemeContext } from "../contexts";
 import { MDBListGroupItem } from "mdbreact";
-export default function Post({ title, content, author }) {
+function Post({ title, content, author }) {
+  console.log("rendering Post");
   const { secondaryColor } = useContext(ThemeContext);
   return (
     <MDBListGroupItem className="my-1">
@@ -19,3 +20,4 @@ export default function Post({ title, content, author }) {
     </MDBListGroupItem>
   );
 }
+export default React.memo(Post);
