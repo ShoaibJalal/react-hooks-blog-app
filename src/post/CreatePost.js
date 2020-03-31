@@ -1,10 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
-import { useResource } from "react-request-hook";
+import React, { useState, useEffect } from "react";
 import { useNavigation } from "react-navi";
-import useUndo from "use-undo";
-import { useDebouncedCallback } from "use-debounce";
-
-import { StateContext } from "../contexts";
 import {
   MDBContainer,
   MDBRow,
@@ -14,30 +9,26 @@ import {
   MDBIcon
 } from "mdbreact";
 
+import {
+  useUserState,
+  useDispatch,
+  useDebouncedUndo,
+  useAPICreatePost
+} from "../hooks";
+
 export default function CreatePost() {
-  const { state, dispatch } = useContext(StateContext);
-  const { user } = state;
+  const user = useUserState();
+  const dispatch = useDispatch();
+
   const [title, setTitle] = useState("");
-  const [content, setInput] = useState("");
+
   const [
-    undoContent,
-    { set: setContent, undo, redo, canUndo, canRedo }
-  ] = useUndo("");
+    content,
+    setContent,
+    { undo, redo, canUndo, canRedo }
+  ] = useDebouncedUndo();
 
-  const [setDebounce, cancelDebounce] = useDebouncedCallback(value => {
-    setContent(value);
-  }, 200);
-
-  useEffect(() => {
-    cancelDebounce();
-    setInput(undoContent.present);
-  }, [cancelDebounce, undoContent]);
-
-  const [post, createPost] = useResource(({ title, content, author }) => ({
-    url: "/posts",
-    method: "post",
-    data: { title, content, author }
-  }));
+  const [post, createPost] = useAPICreatePost();
 
   const navigation = useNavigation();
 
@@ -53,8 +44,7 @@ export default function CreatePost() {
   }
   function handleContent(e) {
     const { value } = e.target;
-    setInput(value);
-    setDebounce(value);
+    setContent(value);
   }
 
   function handleCreate() {

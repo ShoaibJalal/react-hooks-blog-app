@@ -26,7 +26,7 @@ function App() {
     posts: [],
     error: ""
   });
-  const { user, error } = state;
+  const { user } = state;
 
   useEffect(() => {
     if (user) {

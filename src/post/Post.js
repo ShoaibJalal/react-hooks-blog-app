@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-navi";
 import { MDBListGroupItem } from "mdbreact";
 
-import { ThemeContext } from "../contexts";
+import { useTheme } from "../hooks";
 
 function Post({ id, title, content, author, short = false }) {
   let processedContent = content;
@@ -12,8 +12,7 @@ function Post({ id, title, content, author, short = false }) {
     }
   }
 
-  console.log("rendering Post");
-  const { secondaryColor } = useContext(ThemeContext);
+  const { secondaryColor } = useTheme();
   return (
     <MDBListGroupItem className="my-1">
       <div className="d-flex w-100 justify-content-between ">

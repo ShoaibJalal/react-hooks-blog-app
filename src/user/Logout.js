@@ -1,10 +1,12 @@
-import React, { useContext } from "react";
-import { StateContext } from "../contexts";
+import React from "react";
 import { MDBRow, MDBCol, MDBBtn } from "mdbreact";
 
+import { useDispatch, useUserState } from "../hooks";
+
 const Logout = () => {
-  const { state, dispatch } = useContext(StateContext);
-  const { user } = state;
+  const dispatch = useDispatch();
+  const user = useUserState();
+
   return (
     <MDBRow className="justify-content-center align-items-center  ">
       <MDBCol md="6">

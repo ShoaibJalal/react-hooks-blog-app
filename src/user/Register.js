@@ -1,11 +1,19 @@
-import React, { useState, useContext, useEffect } from "react";
-import { useResource } from "react-request-hook";
+import React, { useEffect } from "react";
 import { useInput } from "react-hookedup";
-import { StateContext } from "../contexts";
 import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from "mdbreact";
 
+import { useDispatch, useAPIRegister } from "../hooks";
+
+function useRegisterEffect(user, dispatch) {
+  useEffect(() => {
+    if (user && user.data) {
+      dispatch({ type: "REGISTER", username: user.data.username });
+    }
+  }, [dispatch, user]);
+}
+
 const Register = () => {
-  const { dispatch } = useContext(StateContext);
+  const dispatch = useDispatch();
 
   const { value: username, bindToInput: bindUsername } = useInput("");
   const { value: password, bindToInput: bindPassword } = useInput("");
@@ -13,17 +21,8 @@ const Register = () => {
     ""
   );
 
-  const [user, register] = useResource((username, password) => ({
-    url: "/users",
-    method: "post",
-    data: { username, password }
-  }));
-
-  useEffect(() => {
-    if (user && user.data) {
-      dispatch({ type: "REGISTER", username: user.data.username });
-    }
-  }, [dispatch, user]);
+  const [user, register] = useAPIRegister();
+  useRegisterEffect(user, dispatch);
 
   return (
     <MDBContainer>

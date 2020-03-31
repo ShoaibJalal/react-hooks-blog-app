@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
-import { StateContext } from "../contexts";
-
+import React from "react";
 import { MDBListGroup, MDBContainer, MDBRow } from "mdbreact";
+
+import { usePostsState } from "../hooks";
 import Post from "./Post";
+
 export default function PostList() {
-  const { state } = useContext(StateContext);
-  const { posts } = state;
+  const posts = usePostsState();
 
   return (
     <MDBContainer>

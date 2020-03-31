@@ -1,21 +1,10 @@
-import React, { useState, useContext, useEffect } from "react";
-import { useResource } from "react-request-hook";
+import React, { useState, useEffect } from "react";
 import { useInput } from "react-hookedup";
-import { StateContext } from "../contexts";
 import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from "mdbreact";
 
-const Login = () => {
-  const { value: username, bindToInput: bindUsername } = useInput("");
-  const { value: password, bindToInput: bindPassword } = useInput("");
-  const [loginFailed, setLoginFailed] = useState(false);
+import { useDispatch, useAPILogin } from "../hooks";
 
-  const { dispatch } = useContext(StateContext);
-
-  const [user, login] = useResource((username, password) => ({
-    url: `/login/${encodeURI(username)}/${encodeURI(password)}`,
-    method: "get"
-  }));
-
+function useLoginEffect(user, dispatch, setLoginFailed) {
   useEffect(() => {
     if (user && user.data) {
       if (user.data.length > 0) {
@@ -28,7 +17,17 @@ const Login = () => {
     if (user && user.error) {
       setLoginFailed(true);
     }
-  }, [dispatch, user]);
+  }, [dispatch, user, setLoginFailed]);
+}
+
+const Login = () => {
+  const { value: username, bindToInput: bindUsername } = useInput("");
+  const { value: password, bindToInput: bindPassword } = useInput("");
+  const [loginFailed, setLoginFailed] = useState(false);
+
+  const dispatch = useDispatch();
+  const [user, login] = useAPILogin();
+  useLoginEffect(user, dispatch, setLoginFailed);
 
   return (
     <MDBContainer>

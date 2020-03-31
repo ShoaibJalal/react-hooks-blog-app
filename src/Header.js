@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
-import { ThemeContext } from "./contexts";
+import React from "react";
+
+import { useTheme } from "./hooks";
 
 const Header = ({ text }) => {
-  const { primaryColor } = useContext(ThemeContext);
+  const { primaryColor } = useTheme();
   return (
     <>
       <h1 className="font-weight-bold " style={{ color: primaryColor }}>
