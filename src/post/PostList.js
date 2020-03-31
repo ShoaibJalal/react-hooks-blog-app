@@ -12,7 +12,7 @@ export default function PostList() {
       <MDBRow className="justify-content-center align-items-center mt-3 pt-2 ">
         <MDBListGroup style={{ width: "40rem" }}>
           {posts.map((p, i) => (
-            <Post {...p} key={"postId-" + i} />
+            <Post {...p} key={"postId-" + i} short={true} />
           ))}
         </MDBListGroup>
       </MDBRow>

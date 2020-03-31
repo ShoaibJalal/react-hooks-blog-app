@@ -1,5 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useResource } from "react-request-hook";
+import { useNavigation } from "react-navi";
+import useUndo from "use-undo";
+import { useDebouncedCallback } from "use-debounce";
+
 import { StateContext } from "../contexts";
 import {
   MDBContainer,
@@ -14,24 +18,47 @@ export default function CreatePost() {
   const { state, dispatch } = useContext(StateContext);
   const { user } = state;
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [content, setInput] = useState("");
+  const [
+    undoContent,
+    { set: setContent, undo, redo, canUndo, canRedo }
+  ] = useUndo("");
 
-  const [, createPost] = useResource(({ title, content, author }) => ({
+  const [setDebounce, cancelDebounce] = useDebouncedCallback(value => {
+    setContent(value);
+  }, 200);
+
+  useEffect(() => {
+    cancelDebounce();
+    setInput(undoContent.present);
+  }, [cancelDebounce, undoContent]);
+
+  const [post, createPost] = useResource(({ title, content, author }) => ({
     url: "/posts",
     method: "post",
     data: { title, content, author }
   }));
 
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (post && post.data) {
+      dispatch({ type: "CREATE_POST", ...post.data });
+      navigation.navigate(`/view/${post.data.id}`);
+    }
+  }, [dispatch, navigation, post]);
+
   function handleTitle(evt) {
     setTitle(evt.target.value);
   }
-  function handleContent(evt) {
-    setContent(evt.target.value);
+  function handleContent(e) {
+    const { value } = e.target;
+    setInput(value);
+    setDebounce(value);
   }
 
   function handleCreate() {
     createPost({ title, content, author: user });
-    dispatch({ type: "CREATE_POST", title, content, author: user });
   }
 
   return (
@@ -68,6 +95,28 @@ export default function CreatePost() {
               value={content}
               onChange={handleContent}
             />{" "}
+            <MDBBtn
+              type="button"
+              size="sm"
+              rounded
+              outline
+              color="warning"
+              onClick={undo}
+              disabled={!canUndo}
+            >
+              Undo
+            </MDBBtn>
+            <MDBBtn
+              type="button"
+              size="sm"
+              rounded
+              outline
+              color="info"
+              onClick={redo}
+              disabled={!canRedo}
+            >
+              Redo
+            </MDBBtn>
             <div className="text-center">
               <MDBBtn type="submit" outline color="secondary">
                 Create

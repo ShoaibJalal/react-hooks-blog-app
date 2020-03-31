@@ -1,7 +1,17 @@
 import React, { useContext } from "react";
-import { ThemeContext } from "../contexts";
+import { Link } from "react-navi";
 import { MDBListGroupItem } from "mdbreact";
-function Post({ title, content, author }) {
+
+import { ThemeContext } from "../contexts";
+
+function Post({ id, title, content, author, short = false }) {
+  let processedContent = content;
+  if (short) {
+    if (content.length > 30) {
+      processedContent = content.substring(0, 30) + "...";
+    }
+  }
+
   console.log("rendering Post");
   const { secondaryColor } = useContext(ThemeContext);
   return (
@@ -11,7 +21,13 @@ function Post({ title, content, author }) {
           {title}
         </h3>
       </div>
-      <p className="mb-1">{content}</p>
+      <p className="mb-1">{processedContent}</p>
+      {short && (
+        <div>
+          <br />
+          <Link href={`/view/${id}`}>View full post</Link>
+        </div>
+      )}
       <small className="text-muted">
         <i>
           Written by <b>{author}</b>

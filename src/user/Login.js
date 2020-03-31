@@ -1,12 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useResource } from "react-request-hook";
+import { useInput } from "react-hookedup";
 import { StateContext } from "../contexts";
 import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from "mdbreact";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const { value: username, bindToInput: bindUsername } = useInput("");
+  const { value: password, bindToInput: bindPassword } = useInput("");
   const [loginFailed, setLoginFailed] = useState(false);
-  const [password, setPassword] = useState("");
 
   const { dispatch } = useContext(StateContext);
 
@@ -14,13 +15,6 @@ const Login = () => {
     url: `/login/${encodeURI(username)}/${encodeURI(password)}`,
     method: "get"
   }));
-
-  function handleUsername(evt) {
-    setUsername(evt.target.value);
-  }
-  function handlePassword(evt) {
-    setPassword(evt.target.value);
-  }
 
   useEffect(() => {
     if (user && user.data) {
@@ -51,7 +45,7 @@ const Login = () => {
               <MDBInput
                 label="Type your username"
                 value={username}
-                onChange={handleUsername}
+                {...bindUsername}
                 icon="user"
                 group
                 type="text"
@@ -62,7 +56,7 @@ const Login = () => {
               <MDBInput
                 label="Type your password"
                 value={password}
-                onChange={handlePassword}
+                {...bindPassword}
                 icon="lock"
                 group
                 type="password"

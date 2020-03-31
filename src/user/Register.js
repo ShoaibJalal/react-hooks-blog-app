@@ -1,15 +1,17 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useResource } from "react-request-hook";
+import { useInput } from "react-hookedup";
 import { StateContext } from "../contexts";
 import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from "mdbreact";
 
 const Register = () => {
   const { dispatch } = useContext(StateContext);
 
-  const [username, setUsername] = useState("");
-
-  const [password, setPassword] = useState("");
-  const [passwordRepeat, setPasswordRepeat] = useState("");
+  const { value: username, bindToInput: bindUsername } = useInput("");
+  const { value: password, bindToInput: bindPassword } = useInput("");
+  const { value: passwordRepeat, bindToInput: bindPasswordRepeat } = useInput(
+    ""
+  );
 
   const [user, register] = useResource((username, password) => ({
     url: "/users",
@@ -22,17 +24,6 @@ const Register = () => {
       dispatch({ type: "REGISTER", username: user.data.username });
     }
   }, [dispatch, user]);
-
-  function handleUsername(evt) {
-    setUsername(evt.target.value);
-  }
-  function handlePassword(evt) {
-    setPassword(evt.target.value);
-  }
-
-  function handlePasswordRepeat(evt) {
-    setPasswordRepeat(evt.target.value);
-  }
 
   return (
     <MDBContainer>
@@ -49,7 +40,7 @@ const Register = () => {
               <MDBInput
                 label="Type your username"
                 value={username}
-                onChange={handleUsername}
+                {...bindUsername}
                 icon="user"
                 group
                 type="text"
@@ -64,7 +55,7 @@ const Register = () => {
                 type="password"
                 validate
                 value={password}
-                onChange={handlePassword}
+                {...bindPassword}
               />
               <MDBInput
                 label="Repeat password"
@@ -73,7 +64,7 @@ const Register = () => {
                 type="password"
                 validate
                 value={passwordRepeat}
-                onChange={handlePasswordRepeat}
+                {...bindPasswordRepeat}
               />
             </div>
             <div className="text-center">
